@@ -1,6 +1,5 @@
-from tfidf import tfidf
-import mduri
 import pprint
+from tfidf   import tfidf
 from pymongo import MongoClient
 
 def jaccard_index(set1, set2):
@@ -14,9 +13,9 @@ def tfidf():
     table.addDocument("baz", ["kilo", "lima", "mike", "november"])
     return table.similarities (["alpha", "bravo", "charlie"]) # => [['foo', 0.6875], ['bar', 0.75], ['baz', 0.0]]
 
-def mongodb():
+def getProducts(uri):
     # Mongo URI: "mongodb://<user>:<password>@ds161400.mlab.com:61400/healthyfoods"
-    client = MongoClient(mduri.MURI)
+    client = MongoClient(uri)
     db = client['healthyfoods']
     #collection = db['products']
     products = db.products
@@ -24,19 +23,19 @@ def mongodb():
 
 # Discover things, explore similar products... not related to user profile.
 def similar_products():
-    mongodb()
     # Scan all the tags of the products.
     # Calculate similarity between all the products using the tags.
     # Keep the top 10 similar products.
     # Create a <similar> collection of products (Just Store name and ID).
     # end.
+    return 0;
 
-# Based in the products I usually like, find healthy alternatives.
+# Based in the products the user usually likes, find healthy alternatives.
 def alternative_products():
-    mongodb()
     # Get the last user in the session.
     # Calculate tfidf between all products between user profile and products collection.
     # Mix nutriscore and similarityscore to *bump* healthier products.
     # Keep the top 10 similar products.
     # Create a <alternatives> collection of products. (Just store name and ID).
     # end.
+    return 0;
