@@ -22,10 +22,21 @@ def mongodb():
     products = db.products
     pprint.pprint(products.find_one())
 
-# First connect to the database and get all the products...
-mongodb()
-# Scan all the tags of the products.
-# Calculate similarity between all the products using the tags.
-# Keep the top 10 similar products.
-# Create a collection of products with their similars. (Store name and ID).
-# end.
+# Discover things, explore similar products... not related to user profile.
+def similar_products():
+    mongodb()
+    # Scan all the tags of the products.
+    # Calculate similarity between all the products using the tags.
+    # Keep the top 10 similar products.
+    # Create a <similar> collection of products (Just Store name and ID).
+    # end.
+
+# Based in the products I usually like, find healthy alternatives.
+def alternative_products():
+    mongodb()
+    # Get the last user in the session.
+    # Calculate tfidf between all products between user profile and products collection.
+    # Mix nutriscore and similarityscore to *bump* healthier products.
+    # Keep the top 10 similar products.
+    # Create a <alternatives> collection of products. (Just store name and ID).
+    # end.
