@@ -1,16 +1,7 @@
-import tfidf
 from pymongo import MongoClient
-
-def jaccard_index(set1, set2):
-    n = len(set1.intersection(set2))
-    return n / float(len(set1) + len(set2) - n)
-
-def tfidf():
-    table = tfidf.tfidf()
-    table.addDocument("foo", ["alpha", "bravo", "charlie"])
-    table.addDocument("bar", ["alpha", "bravo", "charlie", "india", "juliet", "kilo"])
-    table.addDocument("baz", ["kilo", "lima", "mike", "november"])
-    return table.similarities (["alpha", "bravo", "charlie"]) # => [['foo', 0.6875], ['bar', 0.75], ['baz', 0.0]]
+from sklearn.metrics import jaccard_similarity_score
+import pprint
+import numpy as np
 
 def getProducts(uri):
     # Mongo URI: "mongodb://<user>:<password>@ds161400.mlab.com:61400/healthyfoods"
@@ -20,20 +11,41 @@ def getProducts(uri):
     return products.find()
 
 # Discover things, explore similar products... not related to user profile.
-def similar_products():
-    # Scan all the tags of the products.
-    # Calculate similarity between all the products using the tags.
-    # Keep the top 10 similar products.
-    # Create a <similar> collection of products (Just Store name and ID).
-    # end.
+def similar_products(uri, products):
+    client = MongoClient(uri)
+    db = client['healthyfoods']
+    output = []
+    for a in products:
+        table = []
+        for b in products:
+            score = jaccard_similarity_score(a["tags"], b["tags"])
+            if(score < 1.0): # and > 0.5 to get the most similar products.
+                table.append({"_id": b["_id"], "score": score})# "product": b})
+        output.append({"_id": a["_id"], "similarity" : table})
+    pprint.pprint(output)
+    result = db.similar.insert_many(output)
     return 0;
 
 # Based in the products the user usually likes, find healthy alternatives.
-def alternative_products():
-    # Get the last user in the session.
-    # Calculate tfidf between all products between user profile and products collection.
-    # Mix nutriscore and similarityscore to *bump* healthier products.
-    # Keep the top 10 similar products.
-    # Create a <alternatives> collection of products. (Just store name and ID).
-    # end.
+def alternative_products(uri, list):
+    client = MongoClient(uri)
+    db = client['healthyfoods']
+    output = []
+    for a in products:
+        table = []
+        for b in products:
+            score = jaccard_similarity_score(a["tags"], b["tags"])
+            if(score < 1.0): # and > 0.5 to get the most similar products.
+                table.append({"_id": b["_id"], "score": score})# "product": b})
+        output.append({"_id": a["_id"], "similarity" : table})
+    pprint.pprint(output)
+    result = db.alternative.insert_many(output)
     return 0;
+
+def deleteAllSimilar():
+    result = db.similar.delete_many({})
+    return result.deleted_count
+
+def deleteAllAlternative():
+    result = db.alternative.delete_many({})
+    return result.deleted_count
