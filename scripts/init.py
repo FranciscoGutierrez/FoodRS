@@ -1,27 +1,23 @@
+# -*- coding: UTF-8 -*-
 import json
-import keys
 import rsystem
 import pprint
-
+import keys
 import numpy as np
 from sklearn.metrics import jaccard_similarity_score
 
-
-a = ["alpha", "bravo", "charlie", "tom"]
-b = ["alpha", "bravo", "charlie", "tom"]
-print jaccard_similarity_score(a, b)
-
+# a = ["alpha", "bravo", "charlie", "tom"]
+# b = ["alpha", "bravo", "charlie", "tom"]
+#print jaccard_similarity_score(a, b)
 products = list(rsystem.getProducts(keys.URI))
-pprint.pprint(products)
+# pprint.pprint(products)
 
-# Add all the products to the table...
+output = []
 for a in products:
+    table = []
     for b in products:
         score = jaccard_similarity_score(a["tags"], b["tags"])
-        print score
+        table.append({"_id": b["_id"], "score": score, "product": b})
+    output.append({"_id": a["_id"], "similarity" : table})
 
-
-#table = tfidf.tfidf()
-#table.addDocument("foo", ["alpha", "bravo", "charlie"])
-#table.addDocument("bar", ["alpha", "bravo", "charlie", "india", "juliet", "kilo"])
-#print table.similarities (["alpha", "bravo", "charlie"]) # => [['foo', 0.6875], ['bar', 0.75], ['baz', 0.0]]
+pprint.pprint(output)
