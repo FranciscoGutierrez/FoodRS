@@ -1,5 +1,4 @@
-import pprint
-from tfidf   import tfidf
+import tfidf
 from pymongo import MongoClient
 
 def jaccard_index(set1, set2):
@@ -8,7 +7,7 @@ def jaccard_index(set1, set2):
 
 def tfidf():
     table = tfidf.tfidf()
-    table.addDocument("foo", ["alpha", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel"])
+    table.addDocument("foo", ["alpha", "bravo", "charlie"])
     table.addDocument("bar", ["alpha", "bravo", "charlie", "india", "juliet", "kilo"])
     table.addDocument("baz", ["kilo", "lima", "mike", "november"])
     return table.similarities (["alpha", "bravo", "charlie"]) # => [['foo', 0.6875], ['bar', 0.75], ['baz', 0.0]]
@@ -17,9 +16,8 @@ def getProducts(uri):
     # Mongo URI: "mongodb://<user>:<password>@ds161400.mlab.com:61400/healthyfoods"
     client = MongoClient(uri)
     db = client['healthyfoods']
-    #collection = db['products']
     products = db.products
-    pprint.pprint(products.find_one())
+    return products.find()
 
 # Discover things, explore similar products... not related to user profile.
 def similar_products():
