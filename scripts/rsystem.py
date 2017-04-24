@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from pymongo import MongoClient
 from sklearn.metrics import jaccard_similarity_score
 import pprint
