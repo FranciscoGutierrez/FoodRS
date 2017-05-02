@@ -43,10 +43,14 @@ def alternative_products(uri, list):
     result = db.alternative.insert_many(output)
     return 0;
 
-def deleteAllSimilar():
+def deleteAllSimilar(uri):
+    client = MongoClient(uri)
+    db = client['healthyfoods']
     result = db.similar.delete_many({})
     return result.deleted_count
 
-def deleteAllAlternative():
+def deleteAllAlternative(uri):
+    client = MongoClient(uri)
+    db = client['healthyfoods']
     result = db.alternative.delete_many({})
     return result.deleted_count
