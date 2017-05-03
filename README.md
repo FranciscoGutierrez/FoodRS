@@ -32,3 +32,8 @@ mongorestore -h localhost:27017 -d products dump/products/
 ``
 mongorestore -h ds161400.mlab.com:61400 -d healthyfoods -c products -u <username> -p <password> dump/products/
 ``
+
+## Read a product from barcode:
+``
+http://world.openfoodfacts.org/api/v0/product/[barcode].json
+``
