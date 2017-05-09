@@ -53,7 +53,7 @@ def getProductsWithID(uri, list):
     return products.find({"_id": {"$in": list}})
 
 # Discover things, explore similar products... not related to user profile.
-def similar_products(uri, products):
+def similar_products(uri, products,name):
     client = MongoClient(uri)
     db = client['healthyfoods']
     output = []
@@ -71,8 +71,7 @@ def similar_products(uri, products):
                 table.append({"_id": b["_id"], "score": score})# "product": b})
         output.append({"_id": a["_id"], "similarity" : table})
     #pprint.pprint(output)
-    result = db.similar.insert_many(output)
-    print "done!"
+    result = db[name].insert_many(output)
     return 0;
 
 def similarity_test(a,b):
