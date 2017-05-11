@@ -5,6 +5,7 @@ import pprint
 import numpy as np
 
 # Mongo URI: "mongodb://<user>:<password>@ds161400.mlab.com:61400/healthyfoods"
+
 def getProducts(uri):
     client = MongoClient(uri)
     db = client['healthyfoods']
@@ -68,10 +69,10 @@ def similar_products(uri, products,name):
             key_b = key_b + [0]*(key_max - len(key_b))
             score = jaccard_similarity_score(key_a, key_b)
             if(score < 1.0 and score > 0.5): # and > 0.5 to get the most similar products.
-                table.append({"_id": b["_id"], "score": score})# "product": b})
-        output.append({"_id": a["_id"], "similarity" : table})
+                table.append({"pid": b["_id"], "score": score})# "product": b})
+        output.append({"pid": a["_id"], "similarity" : table, "name": name})
     #pprint.pprint(output)
-    result = db[name].insert_many(output)
+    result = db.similar.insert_many(output)
     return 0;
 
 def similarity_test(a,b):
@@ -98,10 +99,10 @@ def alternative_products(uri, favorites, products):
     result = db.alternative.insert_many(output)
     return 0;
 
-def deleteAllSimilar(uri):
+def deleteAllSimilar(uri,name):
     client = MongoClient(uri)
     db = client['healthyfoods']
-    result = db.similar.delete_many({})
+    result = db.similar.delete_many({"name":name})
     return result.deleted_count
 
 def deleteAllAlternative(uri):
