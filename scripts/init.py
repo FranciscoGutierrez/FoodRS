@@ -11,22 +11,20 @@ snacks   = list(rsystem.getSnacksCandies(keys.URI))
 
 #favorites = list(rsystem.getLastUser(keys.URI))[0]["favorites"]
 #p_fav     = list(rsystem.getProductsWithID(keys.URI, favorites))
-
 # rsystem.deleteAllAlternative(keys.URI)
 # rsystem.alternative_products(keys.URI, p_fav, products)
 
-# rsystem.deleteAllSimilar(keys.URI,"all")
-rsystem.deleteAllSimilar(keys.URI,"drinks")
-rsystem.deleteAllSimilar(keys.URI,"veggies")
-rsystem.deleteAllSimilar(keys.URI,"proteins")
-rsystem.deleteAllSimilar(keys.URI,"snacks")
+# rsystem.deleteAllSimilar(keys.URI,"drinks")
+# rsystem.deleteAllSimilar(keys.URI,"veggies")
+# rsystem.deleteAllSimilar(keys.URI,"proteins")
+# rsystem.deleteAllSimilar(keys.URI,"snacks")
+rsystem.deleteAllSimilar(keys.URI,"all")
 
-# rsystem.similar_products(keys.URI, products, "similar_all")
-rsystem.similar_products(keys.URI, drinks,   "drinks")
-rsystem.similar_products(keys.URI, veggies,  "veggies")
-rsystem.similar_products(keys.URI, proteins, "proteins")
-rsystem.similar_products(keys.URI, snacks,   "snacks")
-
+# rsystem.similar_products(keys.URI, drinks,   "drinks")
+# rsystem.similar_products(keys.URI, veggies,  "veggies")
+# rsystem.similar_products(keys.URI, proteins, "proteins")
+# rsystem.similar_products(keys.URI, snacks,   "snacks")
+rsystem.similar_products(keys.URI, products,   "all")
 
 
 # a = ["a"]
