@@ -64,15 +64,19 @@ def similar_products(uri, products,name):
         table = []
         for b in products:
             key_b   = b["_keywords"]
+            nutri   = "";
             key_max = max(len(key_a), len(key_b))
             key_a = key_a + [0]*(key_max - len(key_a))
             key_b = key_b + [0]*(key_max - len(key_b))
             score = jaccard_similarity_score(key_a, key_b)
+            if "nutrition_grade_fr" in b:
+                nutri = b["nutrition_grade_fr"]
             if(score < 1.0 and score > 0.5): # and > 0.5 to get the most similar products.
-                table.append({"pid": b["_id"], "score": score})# "product": b})
+                table.append({"pid": b["_id"], "score": score, "healthy": nutri})# "product": b})
         output.append({"pid": a["_id"], "similarity" : table, "name": name})
     #pprint.pprint(output)
     result = db.similar.insert_many(output)
+    print "done..."
     return 0;
 
 def similarity_test(a,b):
