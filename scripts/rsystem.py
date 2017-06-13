@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from sklearn.metrics import jaccard_similarity_score
 import pprint
 import numpy as np
+import csv
 
 # Mongo URI: "mongodb://<user>:<password>@ds161400.mlab.com:61400/healthyfoods"
 
@@ -76,7 +77,7 @@ def similar_products(uri, products,name):
         output.append({"pid": a["_id"], "similarity" : table, "name": name})
     #pprint.pprint(output)
     result = db.similar.insert_many(output)
-    print "done..."
+    print "done... "
     return 0;
 
 def similarity_test(a,b):
@@ -114,3 +115,25 @@ def deleteAllAlternative(uri):
     db = client['healthyfoods']
     result = db.alternative.delete_many({})
     return result.deleted_count
+
+
+def scrapSimilars(uri):
+    client = MongoClient(uri)
+    db = client['healthyfoods']
+    similar = db.similar.find()
+    with open('names.csv', 'w') as csvfile:
+        fieldnames = ['pid', 'similar']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+
+        for a in similar:
+            pid = a["pid"]
+            table = []
+            sorted_list = a["similarity"] #.sort(key = lambda x: x.score)
+            print sorted_list
+            for b in sorted_list:
+                table.append(b["pid"])
+            writer.writerow({'pid': pid, 'similar': table})
+
+    #pprint.pprint(output)
+    return 0;
